@@ -14,6 +14,8 @@ var jsSources = [
 	'components/scripts/template.js'
 ];
 
+gulp.task('default',['coffee', 'js', 'compass', 'watch']);
+
 
 gulp.task('coffee', function(){
 	gulp.src(coffeeSources)
@@ -43,7 +45,6 @@ gulp.task('compass', function(){
 	.pipe(gulp.dest('builds/development/css'))
 
 });
-gulp.task('default',['coffee', 'js', 'compass']);
 gulp.task('watch', function(){
 	gulp.watch(coffeeSources, ['coffee']);
 	gulp.watch(jsSources, ['js']);
