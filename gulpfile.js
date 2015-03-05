@@ -5,7 +5,8 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	gulpif = require('gulp-if'),
 	uglify = require('gulp-uglify'),
-	minify = require('gulp-minify-css'),
+	minifyCSS = require('gulp-minify-css'),
+	minifyJSON = require('gulp-jsonminify'),
 	minifyHTML = require('gulp-minify-html'),
 	connect = require('gulp-connect'),
 	browserify = require('gulp-browserify'),
@@ -88,14 +89,16 @@ gulp.task('html', function (){
 
 });
 gulp.task('json', function (){
-	gulp.src(jsonSources)
+	gulp.src('builds/development/js/*json')
+	.pipe(gulpif(env === 'production', minifyJSON()))
+	.pipe(gulpif(env === 'production', gulp.dest('builds/production/js')))
 	.pipe(connect.reload())
 
 });
 
 gulp.task('watch', function(){
 	gulp.watch(coffeeSources, ['coffee']);
-	gulp.watch(jsSources, ['js']);
+	gulp.watch('builds/development/js/*json', ['js']);
 	gulp.watch('builds/development/*html', ['html']);
 	gulp.watch(jsonSources, ['json']);
 	gulp.watch('components/sass/*.scss', ['compass']);
